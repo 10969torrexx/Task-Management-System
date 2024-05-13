@@ -29,7 +29,8 @@ class GoogleSigninController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->email),
-                'google_sso_flg' => 1
+                'google_sso_flg' => 1,
+                'picture' => $request->picture
             ]);
             if ($response) {
                 $user = User::latest()->first();
