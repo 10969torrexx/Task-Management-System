@@ -131,51 +131,82 @@
                       </g>
                     </svg>
                   </span>
-                  <span class="app-brand-text demo text-body fw-bolder">Sneat</span>
+                  <span class="app-brand-text demo text-body fw-bolder">TMS</span>
                 </a>
               </div>
               <!-- /Logo -->
               <h4 class="mb-2">Adventure starts here 🚀</h4>
               <p class="mb-4">Make your app management easy and fun!</p>
-                <form id="formAuthentication" class="mb-3" action="index.html" method="POST">
+                <form id="formAuthentication" class="mb-3" action="{{ route('register') }}" method="POST"> @csrf
                     <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="username"
-                        name="username"
-                        placeholder="Enter your username"
-                        autofocus
-                    />
+                        <label for="username" class="form-label">Name</label>
+                        <input
+                            type="text"
+                            class="form-control @error('name') is-invalid @enderror"
+                            id="name"
+                            name="name"
+                            value="{{ old('name') }}"
+                            placeholder="Enter name"
+                            required autocomplete="name" 
+                            autofocus
+                        />
+                        @error('name')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
                     </div>
                     <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="text" class="form-control" id="email" name="email" placeholder="Enter your email" />
+                        <label for="email" class="form-label">Email</label>
+                        <input 
+                            id="email" 
+                            type="email" 
+                            class="form-control @error('email') is-invalid @enderror" 
+                            name="email" 
+                            value="{{ old('email') }}" 
+                            required autocomplete="email"
+                            placeholder="Enter email"
+                        >
+                        @error('email')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Role</label>
+                        <select name="role" id="role" class="form-control">
+                            @foreach(config('const.role') as $role)
+                                <option value="{{ ($loop->iteration) - 1 }}">{{ $role }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="mb-3 form-password-toggle">
                     <label class="form-label" for="password">Password</label>
                     <div class="input-group input-group-merge">
                         <input
-                        type="password"
-                        id="password"
-                        class="form-control"
-                        name="password"
-                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                        aria-describedby="password"
+                            type="password"
+                            id="password" 
+                            class="form-control @error('password') is-invalid @enderror"
+                            name="password"
+                            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                            aria-describedby="password"
+                            required autocomplete="new-password"
                         />
-                        <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                        @error('password')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                    <label class="form-label" for="password">Password Confirm</label>
+                    <div class="input-group input-group-merge">
+                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;">
                     </div>
                     </div>
 
                     <div class="mb-3">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="terms-conditions" name="terms" />
-                        <label class="form-check-label" for="terms-conditions">
-                        I agree to
-                        <a href="javascript:void(0);">privacy policy & terms</a>
-                        </label>
-                    </div>
+                    
                     </div>
                     <button class="btn btn-primary d-grid w-100">Sign up</button>
                 </form>
@@ -215,46 +246,5 @@
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 
-    
-    <script>
-        function decodeJwtResponse(token){
-        let base64url = token.split('.')[1];
-        let base64 = base64url.replace(/-/g, '+').replace(/_/g, '/');
-        let jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) { 
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
-        return JSON.parse(jsonPayload);
-        }
-    
-        window.onSignIn = googleUser =>{
-        var user = decodeJwtResponse(googleUser.credential);
-            if(user){
-                $.ajaxSetup({
-                    headers: {  'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') }
-                });
-                $.ajax({
-                url: `{{ route('loginGoogle') }}`,
-                method: 'POST',
-                data: {
-                    email: user.email,
-                    name: user.name
-                },
-                beforeSend: function(){
-                    $('#btnLogin').html("REDIRECTING...").prop("disabled", true);
-                },
-                    success:function(response){
-                        console.log(response);
-                        if (response.status == 400 || response.status == 200) {
-                            $('#btnLogin').html("Login").prop("disabled", false);
-                            window.location.href ="/home";
-                        }
-                    },
-                    error:function(xhr, status, error){
-                        alert(xhr.responseJSON.message);
-                    }
-                });
-            }
-        }
-   </script>
   </body>
 </html>

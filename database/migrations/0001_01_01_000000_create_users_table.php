@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->integer('google_sso_flg');
+            $table->string('picture')->nullable()->default('../assets/img/avatars/1.png');
+            $table->integer('google_sso_flg')->default(0);
             $table->integer('role')->default(0);
             $table->rememberToken();
             $table->timestamps();
