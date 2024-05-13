@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->integer('task_manager_id');
-            $table->date('deadline');
+            $table->datetime('deadline');
             $table->integer('status')->default(0);
             $table->timestamps();
         });

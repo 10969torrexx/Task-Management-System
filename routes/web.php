@@ -10,17 +10,17 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/index', function() {
-    return view('template.index');
+Route::get('/templates', function() {
+    return view('template.forms-basic-inputs');
 });
 
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 # handle google
 Route::post('auth/google', [GoogleSigninController::class, 'store'])->name('googleSignIn');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/tasks', function() {
-        return 'tasks';
-    });
+    # tasks management
+        Route::get('tasks/index', [TasksController::class, 'index'])->name('tasksIndex');
+        Route::post('tasks/store', [TasksController::class, 'store'])->name('tasksStore');
 });
