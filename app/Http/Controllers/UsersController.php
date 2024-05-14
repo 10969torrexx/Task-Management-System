@@ -20,5 +20,10 @@ class UsersController extends Controller
                 ->get();
             return view('users.index', compact('tasks'));
         }
+        public function tasks(Request $request) {
+            $tasks = Tasks::where('id', $request->id)->get();
+            dd($tasks->toArray());
+            return view('users.tasks', compact('tasks'));
+        }
     // End of Task management
 }
