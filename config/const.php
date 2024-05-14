@@ -10,5 +10,6 @@
                 1 => 'In Progress',
                 2 => 'For Review',
                 3 => 'Completed'
-            ]
+            ],
+            'member_status' => 'No yet assigned'
         ];
