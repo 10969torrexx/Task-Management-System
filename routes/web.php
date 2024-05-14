@@ -15,7 +15,7 @@ Auth::routes();
 
 
 Route::get('/templates', function() {
-    return view('template.tables-basic');
+    return view('template.forms-basic-inputs');
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -40,4 +40,6 @@ Route::middleware(['auth'])->group(function () {
     #user access
         Route::get('users/index', [UsersController::class, 'index'])->name('usersIndex');
         Route::get('users/tasks', [UsersController::class, 'tasks'])->name('usersTasks');
+        Route::post('users/task/status', [UsersController::class, 'updateTasksStatus'])->name('updateTasksStatus');
+        Route::post('users/todolist/status', [UsersController::class, 'updateTodoStatus'])->name('updateTodoStatus');
 });

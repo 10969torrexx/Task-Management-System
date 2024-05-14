@@ -21,9 +21,31 @@ class UsersController extends Controller
             return view('users.index', compact('tasks'));
         }
         public function tasks(Request $request) {
-            $tasks = Tasks::where('id', $request->id)->get();
-            dd($tasks->toArray());
-            return view('users.tasks', compact('tasks'));
+            $tasks = Tasks::where('id', $request->id)->first();
+            $todoLists = TodoLists::where('task_id', $tasks->id)->get();
+            return view('users.tasks', compact('tasks', 'todoLists'));
+        }
+
+        public function updateTasksStatus(Request $request) {
+            $tasks = Tasks::where('id', $request->id)->update([
+                'status' => $request->status
+            ]);
+            return response()->json([
+                'status' => 200,
+                'message' => 'Task status updated',
+                'request' => $request->all()
+            ]);
+        }
+
+        public function updateTodoStatus(Request $request) {
+            $todoLists = TodoLists::where('id', $request->id)->update([
+                'accomplished_flg' => $request->accomplished_flg
+            ]);
+            return response()->json([
+                'status' => 200,
+                'message' => 'Todo List updated!',
+                'request' => $request->all()
+            ]);
         }
     // End of Task management
 }

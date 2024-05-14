@@ -1,5 +1,5 @@
 @extends('layouts.layout')
-@section('title', 'Teams')
+@section('title', 'Assign Tasks')
 @section('content')
     
     <div class="card mb-3">

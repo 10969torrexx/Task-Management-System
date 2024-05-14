@@ -132,7 +132,7 @@
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
             <li class="menu-item active">
-              <a href="index.html" class="menu-link">
+              <a href="/home" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
               </a>
@@ -151,27 +151,10 @@
                 @switch(Auth::user()->role)
                     @case(0)
                       <li class="menu-item">
-                        <a href="javascript:void(0)" class="menu-link menu-toggle">
-                          <i class="menu-icon tf-icons bx bx-box"></i>
-                          <div data-i18n="User interface">My Tasks</div>
+                        <a href="{{ route('usersIndex') }}" class="menu-link">
+                          <i class="menu-icon tf-icons bx bx-crown"></i>
+                          <div data-i18n="Boxicons">My Tasks</div>
                         </a>
-                        <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="{{ route('usersIndex') }}" class="menu-link">
-                            <div data-i18n="Accordion">View</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="ui-accordion.html" class="menu-link">
-                            <div data-i18n="Accordion">Progress</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="ui-alerts.html" class="menu-link">
-                            <div data-i18n="Alerts">Task Re-assignment</div>
-                            </a>
-                        </li>
-                        </ul>
                       </li>
                         @break
                     @case(1)

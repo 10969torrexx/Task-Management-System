@@ -68,7 +68,7 @@ class TasksController extends Controller
     public function destroy(Request $request)
     {   
         $tasks = Tasks::where('id', $request->id)->delete();
-        $todoList = TodoList::where('task_id', $request->id)->delete();
+        $todoList = TodoLists::where('task_id', $request->id)->delete();
         return response()->json(array(
             'status' => 200,
             'message' => 'Task deleted successfully!'
