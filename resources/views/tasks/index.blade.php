@@ -56,7 +56,7 @@
                         <td><i class="fab fa-sketch fa-lg text-warning me-3"></i> <strong>{{ $item->title }}</strong></td>
                         <td>{{ Auth::user()->name }}</td>
                         <td>{{ $todoListCount[($loop->iteration) - 1] }}</td>
-                        <td><span class="badge bg-label-primary me-1">{{ config('const.status.'.$item->status) }}</span></td>
+                        <td><span class="badge bg-label-{{config('const.status_color.' . $item->status)}} me-1">{{ config('const.status.' . $item->status) }}</span></span></td>
                         <td><strong class="text-danger">{{ date('M d, Y H:i:s', strtotime($item->deadline)) }}</strong></td>
                         <td>
                             <div class="dropdown">
