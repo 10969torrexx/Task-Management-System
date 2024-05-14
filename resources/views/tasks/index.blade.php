@@ -46,7 +46,7 @@
                 <th>Task Manager</th>
                 <th># of Todos</th>
                 <th>Status</th>
-                <th>Deadline</th>
+            <th>Deadline</th>
                 <th>Actions</th>
               </tr>
             </thead>
