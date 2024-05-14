@@ -11,5 +11,6 @@
                 2 => 'For Review',
                 3 => 'Completed'
             ],
-            'member_status' => 'No yet assigned'
+            'not_assigned' => 'No yet assigned',
+            'no_task' => 'No more tasks'
         ];

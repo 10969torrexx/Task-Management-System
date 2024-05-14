@@ -27,6 +27,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('tasks/store', [TasksController::class, 'store'])->name('tasksStore');
         Route::post('tasks/destroy', [TasksController::class, 'destroy'])->name('tasksDestroy');
         Route::get('tasks/todos', [TasksController::class, 'todos'])->name('todos');
+        Route::get('tasks/assign', [TasksController::class, 'assign'])->name('tasksAssign');
+        Route::post('tasks/assign-task', [TasksController::class, 'assignTask'])->name('tasksAssignTask');
     # todo lists
         Route::post('todo-lists/store', [TodoListsController::class, 'store'])->name('todoListsStore');
         Route::post('todo-lists/destroy', [TodoListsController::class, 'destroy'])->name('todoListsDestroy');

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Tasks;
-use App\Models\Users;
+use App\Models\User;
 use App\Models\TodoLists;
 
 class TasksController extends Controller
@@ -72,6 +72,40 @@ class TasksController extends Controller
         return response()->json(array(
             'status' => 200,
             'message' => 'Task deleted successfully!'
+        ));
+    }
+
+    /**
+     * show task assigned to user
+     */
+    public function assign() {
+        $tasks = Tasks::where('task_manager_id', Auth::user()->id)->where('status', 0)->get();
+        $hasAssigned = Tasks::where('task_manager_id', Auth::user()->id)->where('status', '!=', 0)->get();
+        $assignedUsers = [];
+        foreach ($hasAssigned as $key => $value) {
+            array_push($assignedUsers, $value->assigned_to);
+        }
+        $members = User::where('role', 0)->whereNotIn('id', $assignedUsers)->get();
+        $taskAssigned = Tasks::join('users', 'tasks.assigned_to', '=', 'users.id')
+                     ->where('tasks.task_manager_id', Auth::user()->id)
+                     ->where('tasks.assigned_to', '!=', 0)
+                     ->select('tasks.*', 'users.name as assigned_to_name', 'users.name as user_email')
+                     ->get();
+        return view('tasks.assign', compact('tasks', 'members', 'taskAssigned'));
+    }
+
+    /**
+     * assign task to user
+     */
+    public function assignTask(Request $request) {
+        $task = Tasks::where('id', $request->task_id)->update([
+            'assigned_to' => $request->assigned_to,
+            'status' => 1
+        ]);
+        return response()->json(array(
+            'status' => 200,
+            'message' => 'Task assigned successfully!',
+            'request' => $request->all()
         ));
     }
 }
