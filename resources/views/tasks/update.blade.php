@@ -21,7 +21,7 @@
 
     <div class="card">
         <h5 class="card-header">Todo List</h5>
-       <div class="card-body">
+        <div class="card-body">
             <div class="mb-3 px-4">
                 <form action="{{ route('todoListsStore') }}" method="POST"> @csrf
                     <div class="input-group">
@@ -37,18 +37,47 @@
                 </form>
             </div>
             <div class="mb-3 px-4">
-                <div class="table-responsive text-nowrap">
-                    @foreach ($todoLists as $item)
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck3" checked>
-                            <label class="form-check-label" for="defaultCheck3"> {{ $item->name }} </label>
-                        </div>
-                    @endforeach
-                </div>
+               <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Todo</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($todoLists as $item)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $item->name }}</td>
+                                <td class="text-right">
+                                    <button class="btn btn-outline-danger float-right" id="delete_todo" data-id="{{ $item->id }}">Delete</button>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+               </table>
             </div>
-       </div>
+        </div>
     </div>
     <script>
-       
+        $(document).on('click', '#delete_todo', function(e) {
+            e.preventDefault();
+            let id = $(this).data('id');
+            $.ajax({
+                url: `{{ route('todoListsDestroy') }}`,
+                method: 'POST',
+                data: {
+                    id: id
+                },
+                success: function(response) {
+                    if (response.status == 200) {
+                        location.reload();
+                    }
+                }, error(error) {
+                    console.log(error);
+                }
+            });
+        });
     </script>
 @endsection
