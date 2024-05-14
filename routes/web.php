@@ -5,6 +5,7 @@ use App\Http\Controllers\GoogleSigninController;
 use App\Http\Controllers\TasksController;
 use App\Http\Controllers\TeamsController;
 use App\Http\Controllers\TodoListsController;
+use App\Http\Controllers\UsersController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -14,7 +15,7 @@ Auth::routes();
 
 
 Route::get('/templates', function() {
-    return view('template.forms-basic-inputs');
+    return view('template.tables-basic');
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -35,4 +36,7 @@ Route::middleware(['auth'])->group(function () {
     # team management
         Route::get('teams/index', [TeamsController::class, 'index'])->name('teamsIndex');
         Route::post('teams/store', [TeamsController::class, 'store'])->name('teamsStore');
+
+    #user access
+        Route::get('users/index', [UsersController::class, 'index'])->name('usersIndex');
 });
