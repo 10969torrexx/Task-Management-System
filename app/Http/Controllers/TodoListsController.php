@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class TodoListsController extends Controller
 {
-     /**
+    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
@@ -23,5 +23,17 @@ class TodoListsController extends Controller
         ]);
 
         return redirect()->back();
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function destroy(Request $request)
+    {   
+        $todoLists = TodoLists::where('id', $request->id)->delete();
+        return response()->json(array(
+            'status' => 200,
+            'message' => 'Todo list deleted successfully!'
+        ));
     }
 }
