@@ -52,6 +52,7 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="../assets/js/config.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
   </head>
 
   <body>
@@ -160,14 +161,15 @@
                             <ul class="menu-sub">
                             <li class="menu-item">
                               <a href="{{ route('tasksIndex') }}" class="menu-link">
-                                  <div data-i18n="Accordion">View</div>
+                                  <div data-i18n="Alerts">Create</div>
                               </a>
                             </li>
                             <li class="menu-item">
-                                <a href="ui-alerts.html" class="menu-link">
-                                    <div data-i18n="Alerts">Create</div>
-                                </a>
+                              <a href="#" class="menu-link">
+                                  <div data-i18n="Accordion">View</div>
+                              </a>
                             </li>
+                            
                             </ul>
                         </li>
                         @break
@@ -182,10 +184,15 @@
                 @case(1)
                     <li class="menu-item">
                         <a href="javascript:void(0)" class="menu-link menu-toggle">
-                        <i class="menu-icon tf-icons bx bx-box"></i>
-                        <div data-i18n="User interface">My team</div>
+                          <i class="menu-icon tf-icons bx bx-box"></i>
+                          <div data-i18n="User interface">Teams</div>
                         </a>
                         <ul class="menu-sub">
+                        <li class="menu-item">
+                            <a href="{{ route('teamsIndex') }}" class="menu-link">
+                            <div data-i18n="Accordion">Create</div>
+                            </a>
+                        </li>
                         <li class="menu-item">
                             <a href="ui-accordion.html" class="menu-link">
                             <div data-i18n="Accordion">Progress</div>
@@ -437,5 +444,10 @@
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script>
+      $.ajaxSetup({
+          headers: {  'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') }
+      });
+    </script>
   </body>
 </html>

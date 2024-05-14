@@ -44,7 +44,7 @@
               <tr>
                 <th>Title</th>
                 <th>Task Manager</th>
-                <th>Members</th>
+                <th># of Todos</th>
                 <th>Status</th>
                 <th>Actions</th>
               </tr>
@@ -54,19 +54,7 @@
                     <tr class="table-default">
                         <td><i class="fab fa-sketch fa-lg text-warning me-3"></i> <strong>{{ $item->title }}</strong></td>
                         <td>{{ Auth::user()->name }}</td>
-                        <td>
-                            <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
-                                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="" data-bs-original-title="Lilian Fuller">
-                                <img src="../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle">
-                                </li>
-                                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="" data-bs-original-title="Sophia Wilkerson">
-                                <img src="../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle">
-                                </li>
-                                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="" data-bs-original-title="Christina Parker">
-                                <img src="../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle">
-                                </li>
-                            </ul>
-                        </td>
+                        <td>{{ $todoListCount[($loop->iteration) - 1] }}</td>
                         <td><span class="badge bg-label-primary me-1">{{ config('const.status.'.$item->status) }}</span></td>
                         <td>
                         <div class="dropdown">
@@ -74,8 +62,8 @@
                             <i class="bx bx-dots-vertical-rounded"></i>
                             </button>
                             <div class="dropdown-menu">
-                            <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                            <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
+                                <a class="dropdown-item" href="{{ route('todos', ['id' => $item->id]) }}"><i class="bx bx-edit-alt me-1"></i> Add Todo List</a>
+                            <a class="dropdown-item" href="javascript:void(0);" id="delete_task" data-id="{{ $item->id }}"><i class="bx bx-trash me-1"></i> Delete</a>
                             </div>
                         </div>
                         </td>
@@ -84,5 +72,24 @@
             </tbody>
           </table>
         </div>
-      </div>
+    </div>
+    <script>
+        $(document).on('click', '#delete_task', function() {
+            let task_id = $(this).data('id');
+            $.ajax({
+                url: `{{ route('tasksDestroy') }}`,
+                method: 'POST',
+                data: {
+                    id: task_id
+                },
+                success: function(response) {
+                    if (response.status === 200) {
+                        location.reload();
+                    }
+                }, error(error) {
+                    console.log(error);
+                }
+            });
+        });
+    </script>
 @endsection

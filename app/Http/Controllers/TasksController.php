@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Tasks;
+use App\Models\Users;
+use App\Models\TodoLists;
 
 class TasksController extends Controller
 {
@@ -14,7 +16,13 @@ class TasksController extends Controller
     public function index()
     {
         $tasks = Tasks::where('task_manager_id', Auth::user()->id)->get();
-        return view('tasks.index', compact('tasks'));
+        # get number of todo lists per task
+        $todoListCount = [];
+        foreach($tasks as $task) {
+            $task->todo_lists = TodoLists::where('task_id', $task->id)->count();
+            array_push($todoListCount, $task->todo_lists);
+        }
+        return view('tasks.index', compact('tasks', 'todoListCount'));
     }
 
     /**
@@ -39,9 +47,11 @@ class TasksController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function todos(Request $request)
     {
-        //
+        $tasks = Tasks::where('id', $request->id)->first();
+        $todoLists = TodoLists::where('task_id', $request->id)->get();
+        return view('tasks.update', compact('tasks', 'todoLists'));
     }
 
     /**
@@ -55,8 +65,13 @@ class TasksController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
+    public function destroy(Request $request)
+    {   
+        $tasks = Tasks::where('id', $request->id)->delete();
+        $todoList = TodoList::where('task_id', $request->id)->delete();
+        return response()->json(array(
+            'status' => 200,
+            'message' => 'Task deleted successfully!'
+        ));
     }
 }
