@@ -39,4 +39,5 @@ Route::middleware(['auth'])->group(function () {
 
     #user access
         Route::get('users/index', [UsersController::class, 'index'])->name('usersIndex');
+        Route::get('users/tasks', [UsersController::class, 'tasks'])->name('usersTasks');
 });
