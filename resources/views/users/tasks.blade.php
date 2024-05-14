@@ -69,12 +69,11 @@
             let isChecked = 0;
             let todoId = $(this).data('id')
             e.preventDefault();
-            if ($('#todolist_checker').is(':checked')) {
+            if ($(this).is(':checked')) {
                isChecked = 1;
             } else {
                 isChecked = 0;
             }
-            
             $.ajax({
                 url: `{{ route('updateTodoStatus') }}`,
                 method: 'POST',

@@ -46,7 +46,7 @@
 
     <div class="card mb-3">
         <h5 class="card-header">Task Assignment</h5>
-        <div class="table-responsive text-nowrap">
+    <div class="table-responsive text-nowrap">
           <table class="table">
             <thead>
               <tr>
@@ -64,7 +64,7 @@
                         <td>{{ $item->assigned_to_name }}</td>
                         <td>{{ $item->user_email }}</td>
                         <td>{{ !empty($item->title) ? $item->title : config('const.not_assigned') }}</td>
-                        <td><span class="badge bg-label-primary me-1">{{ config('const.status.'.$item->status) }}</span></td>
+                        <td><span class="badge bg-label-{{config('const.status_color.' . $item->status)}} me-1">{{ config('const.status.' . $item->status) }}</span></td>
                     </tr>
                 @endforeach
             </tbody>
