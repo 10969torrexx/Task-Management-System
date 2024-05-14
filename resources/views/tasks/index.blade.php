@@ -46,6 +46,7 @@
                 <th>Task Manager</th>
                 <th># of Todos</th>
                 <th>Status</th>
+                <th>Deadline</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -56,16 +57,17 @@
                         <td>{{ Auth::user()->name }}</td>
                         <td>{{ $todoListCount[($loop->iteration) - 1] }}</td>
                         <td><span class="badge bg-label-primary me-1">{{ config('const.status.'.$item->status) }}</span></td>
+                        <td><strong class="text-danger">{{ date('M d, Y H:i:s', strtotime($item->deadline)) }}</strong></td>
                         <td>
-                        <div class="dropdown">
-                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                            <i class="bx bx-dots-vertical-rounded"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="{{ route('todos', ['id' => $item->id]) }}"><i class="bx bx-edit-alt me-1"></i> Add Todo List</a>
-                            <a class="dropdown-item" href="javascript:void(0);" id="delete_task" data-id="{{ $item->id }}"><i class="bx bx-trash me-1"></i> Delete</a>
+                            <div class="dropdown">
+                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="{{ route('todos', ['id' => $item->id]) }}"><i class="bx bx-edit-alt me-1"></i> Add Todo List</a>
+                                <a class="dropdown-item" href="javascript:void(0);" id="delete_task" data-id="{{ $item->id }}"><i class="bx bx-trash me-1"></i> Delete</a>
+                                </div>
                             </div>
-                        </div>
                         </td>
                     </tr>
                 @endforeach
