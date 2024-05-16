@@ -64,6 +64,7 @@
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <!--? Config:  test commit.  -->
     <script src="../assets/js/config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
 
   <body>
@@ -209,9 +210,19 @@
                 },
                     success:function(response){
                         console.log(response);
-                        if (response.status == 400 || response.status == 200) {
-                            $('#btnLogin').html("Login").prop("disabled", false);
-                            window.location.href ="/home";
+                        if(response.status == 200 || response.status == 400) {
+                            Swal.fire({
+                                title: 'Success!',
+                                text: `${response.message}`,
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    $('#btnLogin').html("Login").prop("disabled", false);
+                                    window.location.href ="/home";
+                                }
+                            });
+                           
                         }
                     },
                     error:function(xhr, status, error){

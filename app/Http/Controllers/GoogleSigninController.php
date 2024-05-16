@@ -49,7 +49,7 @@ class GoogleSigninController extends Controller
         Auth::login($ifUserExists);
         return response()->json(array(
             'status' => 200,
-            'message' => 'Account created!',
+            'message' => 'Login Successfully!',
             'account' => $ifUserExists
         ));
     }
