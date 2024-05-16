@@ -78,20 +78,43 @@
     <script>
         $(document).on('click', '#delete_task', function() {
             let task_id = $(this).data('id');
-            $.ajax({
-                url: `{{ route('tasksDestroy') }}`,
-                method: 'POST',
-                data: {
-                    id: task_id
-                },
-                success: function(response) {
-                    if (response.status === 200) {
-                        location.reload();
-                    }
-                }, error(error) {
-                    console.log(error);
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Do you want to proceed with this action?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'OK',
+                cancelButtonText: 'Cancel',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `{{ route('tasksDestroy') }}`,
+                        method: 'POST',
+                        data: {
+                            id: task_id
+                        },
+                        success: function(response) {
+                            if (response.status === 200) {
+                                Swal.fire({
+                                    title: 'Success!',
+                                    text: `${response.message}`,
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        location.reload();
+                                    }
+                                });
+                            }
+                        }, error(error) {
+                            console.log(error);
+                        }
+                    });
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                   
                 }
             });
+           
         });
     </script>
 @endsection
