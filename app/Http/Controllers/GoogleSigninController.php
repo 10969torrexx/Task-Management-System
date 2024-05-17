@@ -25,25 +25,10 @@ class GoogleSigninController extends Controller
         # check is user already exists
         $ifUserExists = User::where('email', $request->email)->first();
         if (!$ifUserExists) {
-            $response = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->email),
-                'google_sso_flg' => 1,
-                'picture' => $request->picture
-            ]);
-            if ($response) {
-                $user = User::latest()->first();
-                Auth::login($user);
-                return response()->json(array(
-                    'status' => 200,
-                    'message' => 'Account created!',
-                    'account' => $ifUserExists
-                ));
-            }
             return response()->json(array(
-                'status' => 400,
-                'message' => 'Failed to create account!'
+                'status' => 300,
+                'message' => 'User not found!',
+                'account' => $request->all()
             ));
         } 
         Auth::login($ifUserExists);

@@ -6,6 +6,7 @@ use App\Http\Controllers\TasksController;
 use App\Http\Controllers\TeamsController;
 use App\Http\Controllers\TodoListsController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\EmailOTPsController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -43,3 +44,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('users/task/status', [UsersController::class, 'updateTasksStatus'])->name('updateTasksStatus');
         Route::post('users/todolist/status', [UsersController::class, 'updateTodoStatus'])->name('updateTodoStatus');
 });
+
+# email otp
+Route::get('/emailotp/{email}', [EmailOTPsController::class, 'index'])->name('emailOtpIndex');
+// Route::post('email-otp/send', [EmailOTPsController::class, 'send'])->name('emailOtpSend');
+// Route::post('email-otp/verify', [EmailOTPsController::class, 'verify'])->name('emailOtpVerify');
