@@ -209,8 +209,7 @@
                     $('#btnLogin').html("REDIRECTING...").prop("disabled", true);
                 },
                     success:function(response){
-                        console.log(response);
-                        if(response.status == 200 || response.status == 400) {
+                        if(response.status == 200) {
                             Swal.fire({
                                 title: 'Success!',
                                 text: `${response.message}`,
@@ -222,7 +221,10 @@
                                     window.location.href ="/home";
                                 }
                             });
-                           
+                        }
+                        if (response.status == 300) {
+                            console.log(response.account.email);
+                            window.location.href = `/emailotp/${response.account.email}`;
                         }
                     },
                     error:function(xhr, status, error){
