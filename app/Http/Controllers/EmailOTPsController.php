@@ -23,12 +23,9 @@ class EmailOTPsController extends Controller
                 'otp' => $otp,
                 'email' => $email
             ]);
-            $details = [
-                'title' => 'Mail from Laravel',
-                'body' => 'This is a test email sent from Laravel.'
-            ];
+           
     
-            Mail::to($email)->send(new YourMailableClass($details));
+            Mail::to($email)->send(new SendOTP());
     
             return view('emailotp.index', compact('email', 'otp'));
         }
