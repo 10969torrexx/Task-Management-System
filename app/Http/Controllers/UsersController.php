@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Tasks;
 use App\Models\User;
 use App\Models\TodoLists;
+use Illuminate\Support\Facades\Session;
 class UsersController extends Controller
 {
     /**
@@ -48,4 +49,30 @@ class UsersController extends Controller
             ]);
         }
     // End of Task management
+
+        public function register(Request $request) {
+            $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'password' => ['required', 'string', 'min:8', 'confirmed', 'regex:/^(?=.*[a-z])(?=.*[A-Z]).+$/'],
+            ]);
+            
+            Session::put('googleUser', $request->all());
+            return redirect()->route('emailOtpIndex', ['email' => $request->email]);
+        }
+
+        public function login(Request $request) {
+            $request->validate([
+                'email' => ['required', 'string', 'email', 'max:255'],
+                'password' => ['required', 'string', 'min:8', 'regex:/^(?=.*[a-z])(?=.*[A-Z]).+$/'],
+            ]);
+            $credentials = $request->only('email', 'password');
+            if (Auth::attempt($credentials)) {
+                $request->session()->regenerate();
+                return redirect()->intended('dashboard');
+            }
+            return back()->withErrors([
+                'email' => 'The provided credentials do not match our records.',
+            ]);
+        }
 }

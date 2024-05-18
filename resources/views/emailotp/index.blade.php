@@ -125,9 +125,6 @@
                 email: email,
                 otp: email_otp
               },
-              beforeSend: function(){
-                  $('#btnLogin').html("REDIRECTING...").prop("disabled", true);
-              },
               success:function(response){
                 console.log(response);
                 if(response.status == 200) {
