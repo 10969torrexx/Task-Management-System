@@ -198,16 +198,16 @@
                     headers: {  'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') }
                 });
                 $.ajax({
-                url: `auth/google`,
-                method: 'POST',
-                data: {
-                    email: user.email,
-                    name: user.name,
-                    picture: user.picture
-                },
-                beforeSend: function(){
-                    $('#btnLogin').html("REDIRECTING...").prop("disabled", true);
-                },
+                    url: `auth/google`,
+                    method: 'POST',
+                    data: {
+                        email: user.email,
+                        name: user.name,
+                        picture: user.picture
+                    },
+                    beforeSend: function(){
+                        $('#btnLogin').html("REDIRECTING...").prop("disabled", true);
+                    },
                     success:function(response){
                         if(response.status == 200) {
                             Swal.fire({
