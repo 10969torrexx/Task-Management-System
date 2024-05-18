@@ -12,21 +12,20 @@ use App\Mail\SendOTP;
 use Illuminate\Support\Facades\Mail;
 class EmailOTPsController extends Controller
 {
-    //
-      /**
-     * Display a listing of the resource.
-        */
+    
         public function index($email)
-        {
-            $otp = mt_rand(100000, 999999);
-            $emailOtp = EmailOTPs::create([
-                'otp' => $otp,
-                'email' => $email
-            ]);
-           
-    
-            Mail::to($email)->send(new SendOTP());
-    
-            return view('emailotp.index', compact('email', 'otp'));
-        }
+    {
+        $otp = mt_rand(100000, 999999);
+        $emailOtp = EmailOTPs::create([
+            'otp' => $otp,
+            'email' => $email
+        ]);
+        
+        // Send OTP email
+        Mail::raw("Your OTP is: $otp", function ($message) use ($email) {
+            $message->to($email)->subject('Your OTP Code');
+        });
+
+        return view('emailotp.index', compact('email', 'otp'));
+    }
 }

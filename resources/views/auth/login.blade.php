@@ -88,7 +88,7 @@
                 <!-- /Logo -->
                 <h4 class="mb-2">Welcome to TMS! 👋</h4>
                 <div class="mt-2 text-center">
-                    <div id="g_id_onload" data-client_id="603773112475-9rdggpnvt277sd84pacjm5s2akd1jkgd.apps.googleusercontent.com" data-callback="onSignIn"></div>
+                    <div id="g_id_onload" data-client_id="{{ env('GOOGLE_CLIENT_ID') }}" data-callback="onSignIn"></div>
                     <div class="g_id_signin form-control" data-type="standard"></div>
                 </div>
                 <p class="mb-4">Please sign-in to your account and start the adventure</p>
