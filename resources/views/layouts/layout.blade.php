@@ -72,20 +72,6 @@
           <div class="menu-inner-shadow"></div>
 
           <ul class="menu-inner py-1">
-            <!-- Dashboard -->
-            <li class="menu-item active">
-              <a href="/home" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                <div data-i18n="Analytics">Dashboard</div>
-              </a>
-            </li>
-
-            <!-- Layouts -->
-            
-
-         
-            
-           
             <!-- Components -->
             <li class="menu-header small text-uppercase"><span class="menu-header-text">{{ (Auth::user()->role == 1 ) ? 'Team Management' : 'Component' }}</span></li>
             <!-- Cards -->
@@ -151,7 +137,7 @@
                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
                   <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                     <div class="avatar avatar-online">
-                      <img src="{{ Auth::user()->picture }}" alt class="w-px-40 h-auto rounded-circle"  height="10"/>
+                      <img src="{{ !empty( Auth::user()->picture ) ?  Auth::user()->picture : '../assets/img/avatars/1.png'  }}" alt class="w-px-40 h-auto rounded-circle"  height="10"/>
                     </div>
                   </a>
                   <ul class="dropdown-menu dropdown-menu-end">
@@ -160,7 +146,7 @@
                         <div class="d-flex">
                           <div class="flex-shrink-0 me-3">
                             <div class="avatar avatar-online">
-                              <img src="{{ Auth::user()->picture }}" alt class="w-px-40 h-auto rounded-circle" height="10" />
+                              <img src="{{ !empty( Auth::user()->picture ) ?  Auth::user()->picture : '../assets/img/avatars/1.png'  }}" alt class="w-px-40 h-auto rounded-circle" height="10" />
                             </div>
                           </div>
                           <div class="flex-grow-1">
