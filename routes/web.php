@@ -7,6 +7,7 @@ use App\Http\Controllers\TeamsController;
 use App\Http\Controllers\TodoListsController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\EmailOTPsController;
+use App\Http\Controllers\Auth\LoginController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -28,7 +29,9 @@ Route::get('/emailotp/{email}', [EmailOTPsController::class, 'index'])->name('em
 // Route::post('email-otp/send', [EmailOTPsController::class, 'send'])->name('emailOtpSend');
 Route::middleware(['throttle:5,1'])->group(function () {
     Route::post('emailotp/verify', [EmailOTPsController::class, 'verify'])->name('emailOtpVerify');
+    Route::post('/login', [LoginController::class, 'login'])->name('login');
 });
+
 
 Route::post('user/register', [UsersController::class, 'register'])->name('userRegsister');
 Route::post('user/login', [UsersController::class, 'login'])->name('userLogin');
