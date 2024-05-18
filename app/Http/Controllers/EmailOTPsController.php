@@ -54,6 +54,7 @@ class EmailOTPsController extends Controller
                     'email' => $email,
                     'name' => Session::get('googleUser')['name'],
                     'picture' => !empty(Session::get('googleUser')['picture']) ? Session::get('googleUser')['picture'] : null,
+                    'role' => !empty(Session::get('googleUser')['role']) ? Session::get('googleUser')['role'] : 0,
                     'password' => Hash::make(!empty(Session::get('googleUser')['password']) ? Session::get('googleUser')['password'] : 'ExampleString')
                 ]);
             }
