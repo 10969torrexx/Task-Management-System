@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Session;
 class GoogleSigninController extends Controller
 {
     /**
@@ -25,6 +25,7 @@ class GoogleSigninController extends Controller
         # check is user already exists
         $ifUserExists = User::where('email', $request->email)->first();
         if (!$ifUserExists) {
+            Session::put('googleUser', $request->all());
             return response()->json(array(
                 'status' => 300,
                 'message' => 'User not found!',

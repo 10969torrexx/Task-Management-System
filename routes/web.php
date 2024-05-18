@@ -48,4 +48,6 @@ Route::middleware(['auth'])->group(function () {
 # email otp
 Route::get('/emailotp/{email}', [EmailOTPsController::class, 'index'])->name('emailOtpIndex');
 // Route::post('email-otp/send', [EmailOTPsController::class, 'send'])->name('emailOtpSend');
-// Route::post('email-otp/verify', [EmailOTPsController::class, 'verify'])->name('emailOtpVerify');
+Route::middleware(['throttle:5,1'])->group(function () {
+    Route::post('emailotp/verify', [EmailOTPsController::class, 'verify'])->name('emailOtpVerify');
+});

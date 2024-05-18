@@ -53,7 +53,7 @@
 
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Page CSS -->
     <!-- Page -->
     <link rel="stylesheet" href="../assets/vendor/css/pages/page-auth.css" />
@@ -74,15 +74,15 @@
       <div class="authentication-wrapper authentication-basic container-p-y">
         <div class="authentication-inner">
             <div class="card mb-4">
-                <h5 class="card-header">Email OTP</h5>
+              <h5 class="card-header">Email OTP</h5>
                 <div class="card-body">
-                <div>
-                    <label for="defaultFormControlInput" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="defaultFormControlInput" placeholder="" aria-describedby="defaultFormControlHelp">
-                    <div id="defaultFormControlHelp" class="form-text">
-                        We've sent an OTP to your email ({{ $email }}). Please enter the OTP to verify your email.
-                    </div>
-                </div>
+                  <div id="defaultFormControlHelp" class="form-text mb-3 ">
+                    We've sent an OTP to your email <strong>({{ $email }})</strong>. Please enter the OTP to verify your email.
+                    Please check the spam folder if you don't find the email in your inbox.
+                  </div>
+                  <label for="defaultFormControlInput" class="form-label">OTP (One Time Password)</label>
+                  <input type="text" class="form-control mb-3" id="email_otp" placeholder="" aria-describedby="defaultFormControlHelp">
+                  <button class="btn btn-primary" id="submit_otp_button">Submit</button>
                 </div>
             </div>
         </div>
@@ -110,5 +110,64 @@
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script>
+      $.ajaxSetup({
+          headers: {  'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') }
+      });
+      $(document).ready(function () {
+        $("#submit_otp_button").click(function () {
+          var email_otp = $("#email_otp").val();
+          var email = "{{ $email }}";
+          $.ajax({
+              url: `{{ route('emailOtpVerify') }}`,
+              method: 'POST',
+              data: {
+                email: email,
+                otp: email_otp
+              },
+              beforeSend: function(){
+                  $('#btnLogin').html("REDIRECTING...").prop("disabled", true);
+              },
+              success:function(response){
+                console.log(response);
+                if(response.status == 200) {
+                    Swal.fire({
+                      title: 'Success!',
+                      text: `${response.message}`,
+                      icon: 'success',
+                      confirmButtonText: 'OK'
+                    }).then((result) => {
+                      window.location.href ="/home";
+                    });
+                }
+                if (response.status == 500) {
+                  Swal.fire({
+                      title: 'Error!',
+                      text: `${response.message}`,
+                      icon: 'error',
+                      confirmButtonText: 'OK'
+                  });
+                }
+              },
+              error: function(jqXHR, textStatus, errorThrown) {
+                if (jqXHR.status === 429) {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Too Many Requests',
+                    text: 'You have exceeded the rate limit. Please wait a moment and try again.',
+                    confirmButtonText: 'Okay'
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "/";
+                    }
+                  });
+                } else {
+                    // handle other errors
+                }
+              }
+          });
+        });
+      });
+    </script>
   </body>
 </html>
