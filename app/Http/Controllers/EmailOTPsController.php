@@ -53,9 +53,11 @@ class EmailOTPsController extends Controller
                 $user = User::create([
                     'email' => $email,
                     'name' => Session::get('googleUser')['name'],
+                    'picture' => Session::get('googleUser')['picture'],
                     'password' => Hash::make($email)
                 ]);
             }
+            EmailOTPs::where('email', $email)->delete();
             Auth::login($user);
             return response()->json([
                 'status' => 200, // 'error
