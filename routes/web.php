@@ -23,6 +23,16 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 # handle google
 Route::post('auth/google', [GoogleSigninController::class, 'store'])->name('googleSignIn');
 
+# email otp
+Route::get('/emailotp/{email}', [EmailOTPsController::class, 'index'])->name('emailOtpIndex');
+// Route::post('email-otp/send', [EmailOTPsController::class, 'send'])->name('emailOtpSend');
+Route::middleware(['throttle:5,1'])->group(function () {
+    Route::post('emailotp/verify', [EmailOTPsController::class, 'verify'])->name('emailOtpVerify');
+});
+
+Route::post('user/register', [UsersController::class, 'register'])->name('userRegsister');
+Route::post('user/login', [UsersController::class, 'login'])->name('userLogin');
+
 Route::middleware(['auth'])->group(function () {
     # tasks management
         Route::get('tasks/index', [TasksController::class, 'index'])->name('tasksIndex');
@@ -45,9 +55,3 @@ Route::middleware(['auth'])->group(function () {
         Route::post('users/todolist/status', [UsersController::class, 'updateTodoStatus'])->name('updateTodoStatus');
 });
 
-# email otp
-Route::get('/emailotp/{email}', [EmailOTPsController::class, 'index'])->name('emailOtpIndex');
-// Route::post('email-otp/send', [EmailOTPsController::class, 'send'])->name('emailOtpSend');
-Route::middleware(['throttle:5,1'])->group(function () {
-    Route::post('emailotp/verify', [EmailOTPsController::class, 'verify'])->name('emailOtpVerify');
-});
