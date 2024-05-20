@@ -223,8 +223,13 @@
                             });
                         }
                         if (response.status == 300) {
-                            console.log(response.account.email);
-                            window.location.href = `/emailotp/${response.account.email}`;
+                            Swal.fire({
+                                title: 'Error!',
+                                text: response.message,
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                            $('#btnLogin').html("Login").prop("disabled", false);
                         }
                     },
                     error:function(xhr, status, error){
