@@ -25,7 +25,6 @@ class GoogleSigninController extends Controller
         # check is user already exists
         $ifUserExists = User::where('email', $request->email)->first();
         if (!$ifUserExists) {
-            Session::put('googleUser', $request->all());
             return response()->json(array(
                 'status' => 300,
                 'message' => 'User not found!',
