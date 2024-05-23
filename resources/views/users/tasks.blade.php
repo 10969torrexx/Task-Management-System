@@ -10,11 +10,11 @@
             </div>
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Deadline</label>
-                <h5><strong class="text-danger">{{ date('M d, Y H:i:s', strtotime($tasks->deadline)) }}</strong></h5>
+                <h5><strong class="text-danger">{{ date('M d, Y', strtotime($tasks->deadline)) }}</strong></h5>
             </div>
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Date Created</label>
-                <h5><strong>{{ date('M d, Y H:i:s', strtotime($tasks->created_at)) }}</strong></h5>
+                <h5><strong>{{ date('M d, Y', strtotime($tasks->created_at)) }}</strong></h5>
             </div>
             <div class="mb-3">
                 <label for="defaultSelect" class="form-label">Task Status</label>

@@ -22,7 +22,7 @@
                         <td>{{ $item->title }}</td>
                         <td>{{ $item->taskmanager_name }}</td>
                         <td><span class="badge bg-label-{{config('const.status_color.' . $item->status)}} me-1">{{ config('const.status.' . $item->status) }}</span></td>
-                        <td><strong class="text-danger">{{ date('M d, Y H:i:s', strtotime($item->deadline)) }}</strong></td>
+                        <td><strong class="text-danger">{{ date('M d, Y', strtotime($item->deadline)) }}</strong></td>
                         <td>
                             <a class="btn btn-outline-primary" href="{{ route('usersTasks', ['id' => $item->id]) }}">View</a>
                         </td>
