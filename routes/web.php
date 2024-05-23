@@ -29,7 +29,7 @@ Route::get('/emailotp/{email}', [EmailOTPsController::class, 'index'])->name('em
 // Route::post('email-otp/send', [EmailOTPsController::class, 'send'])->name('emailOtpSend');
 Route::middleware(['throttle:5,1'])->group(function () {
     Route::post('emailotp/verify', [EmailOTPsController::class, 'verify'])->name('emailOtpVerify');
-    Route::post('/login', [LoginController::class, 'login'])->name('login');
+    Route::post('/login', [UsersController::class, 'login'])->name('login');
 });
 
 
