@@ -64,8 +64,8 @@
                                 <i class="bx bx-dots-vertical-rounded"></i>
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="{{ route('todos', ['id' => $item->id]) }}"><i class="bx bx-edit-alt me-1"></i> Add Todo List</a>
-                                <a class="dropdown-item" href="javascript:void(0);" id="delete_task" data-id="{{ $item->id }}"><i class="bx bx-trash me-1"></i> Delete</a>
+                                    <a class="dropdown-item" href="{{ route('todos', ['id' => encrypt($item->id)]) }}"><i class="bx bx-edit-alt me-1"></i> Add Todo List</a>
+                                <a class="dropdown-item" href="javascript:void(0);" id="delete_task" data-id="{{ encrypt($item->id) }}"><i class="bx bx-trash me-1"></i> Delete</a>
                                 </div>
                             </div>
                         </td>
