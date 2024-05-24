@@ -49,8 +49,8 @@ class TasksController extends Controller
      */
     public function todos(Request $request)
     {
-        $tasks = Tasks::where('id', $request->id)->first();
-        $todoLists = TodoLists::where('task_id', $request->id)->get();
+        $tasks = Tasks::where('id', decrypt($request->id))->first();
+        $todoLists = TodoLists::where('task_id', decrypt($request->id))->get();
         return view('tasks.update', compact('tasks', 'todoLists'));
     }
 
@@ -67,8 +67,8 @@ class TasksController extends Controller
      */
     public function destroy(Request $request)
     {   
-        $tasks = Tasks::where('id', $request->id)->delete();
-        $todoList = TodoLists::where('task_id', $request->id)->delete();
+        $tasks = Tasks::where('id', decrypt($request->id))->delete();
+        $todoList = TodoLists::where('task_id', decrypt($request->id))->delete();
         return response()->json(array(
             'status' => 200,
             'message' => 'Task deleted successfully!'

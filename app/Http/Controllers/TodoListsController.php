@@ -30,7 +30,7 @@ class TodoListsController extends Controller
      */
     public function destroy(Request $request)
     {   
-        $todoLists = TodoLists::where('id', $request->id)->delete();
+        $todoLists = TodoLists::where('id', decrypt($request->id))->delete();
         return response()->json(array(
             'status' => 200,
             'message' => 'Todo list deleted successfully!'
