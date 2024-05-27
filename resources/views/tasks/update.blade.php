@@ -51,7 +51,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->name }}</td>
                                 <td class="text-right">
-                                    <button class="btn btn-outline-danger float-right" id="delete_todo" data-id="{{ $item->id }}">Delete</button>
+                                    <button class="btn btn-outline-danger float-right" id="delete_todo" data-id="{{ encrypt($item->id) }}">Delete</button>
                                 </td>
                             </tr>
                         @endforeach

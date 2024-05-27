@@ -63,16 +63,21 @@ class UsersController extends Controller
 
         public function login(Request $request) {
             $request->validate([
-                'email' => ['required', 'string', 'email', 'max:255'],
-                'password' => ['required', 'string', 'min:8', 'regex:/^(?=.*[a-z])(?=.*[A-Z]).+$/'],
+                'email' => ['required'],
+                'password' => ['required']
             ]);
-            $credentials = $request->only('email', 'password');
-            if (Auth::attempt($credentials)) {
-                $request->session()->regenerate();
-                return redirect()->intended('dashboard');
+            $user = User::where('email', $request->email)->first();
+            if ($user && password_verify($request->password, $user->password)) {
+                Auth::login($user);
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Login successful',
+                    'account' => $user
+                ]);
             }
-            return back()->withErrors([
-                'email' => 'The provided credentials do not match our records.',
+            return response()->json([
+                'status' => 300,
+                'message' => 'Invalid email or password'
             ]);
         }
 }

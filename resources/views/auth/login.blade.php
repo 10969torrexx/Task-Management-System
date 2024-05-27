@@ -93,7 +93,7 @@
                 </div>
                 <p class="mb-4">Please sign-in to your account and start the adventure</p>
 
-                <form id="formAuthentication" class="mb-3" action="{{ route('login') }}" method="POST"> 
+                <form id="formAuthentication" class="mb-3" action="#" method="POST"> 
                     @csrf
                     <div class="mb-3">
                         <label for="email" class="form-label">Email or Username</label>
@@ -117,9 +117,6 @@
                     <div class="mb-3 form-password-toggle">
                     <div class="d-flex justify-content-between">
                         <label class="form-label" for="password">Password</label>
-                        <a href="auth-forgot-password-basic.html">
-                        <small>Forgot Password?</small>
-                        </a>
                     </div>
                     <div class="input-group input-group-merge">
                         <input
@@ -142,7 +139,7 @@
                     <div class="mb-3">
                     </div>
                     <div class="mb-3">
-                    <button class="btn btn-primary d-grid w-100" id="btnLogin" type="submit">Sign in</button>
+                    <button class="btn btn-primary d-grid w-100" id="btnLogin" type="button">Sign in</button>
                     </div>
                 </form>
 
@@ -223,13 +220,13 @@
                             });
                         }
                         if (response.status == 300) {
+                            $('#btnLogin').html("Login").prop("disabled", false);
                             Swal.fire({
                                 title: 'Error!',
                                 text: response.message,
                                 icon: 'error',
                                 confirmButtonText: 'OK'
                             });
-                            $('#btnLogin').html("Login").prop("disabled", false);
                         }
                     },
                     error:function(xhr, status, error){
@@ -238,6 +235,62 @@
                 });
             }
         }
+
+        $('#btnLogin').on('click', function() {
+            var email = $('#email').val();
+            var password = $('#password').val();
+
+            $.ajaxSetup({
+                headers: {  'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') }
+            });
+            $.ajax({
+                url: `{{ route('login') }}`,
+                method: 'POST',
+                data: {
+                    email: email,
+                    password: password
+                },
+                beforeSend: function(){
+                    $('#btnLogin').html("LOADING...").prop("disabled", true);
+                },
+                success:function(response){
+                    if(response.status == 200) {
+                        Swal.fire({
+                            title: 'Success!',
+                            text: `${response.message}`,
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $('#btnLogin').html("Login").prop("disabled", false);
+                                window.location.href ="/home";
+                            }
+                        });
+                    }
+                    if (response.status == 300) {
+                        $('#btnLogin').html("Login").prop("disabled", false);
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.message,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                },
+                error:function(xhr, status, error){
+                    // alert(xhr.responseJSON.message);
+                    Swal.fire({
+                        title: 'Error!',
+                        text: xhr.responseJSON.message,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    setTimeout(() => {
+                        $('#btnLogin').html("Login").prop("disabled", false);
+                    }, 2000);
+                }
+            });
+        });
 
     </script>
   </body>
