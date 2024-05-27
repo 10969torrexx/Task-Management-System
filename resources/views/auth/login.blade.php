@@ -236,7 +236,7 @@
                 });
             }
         }
-        var loginAttempts = 5
+        var loginAttempts = 3
         $('#btnLogin').on('click', function() {
             var email = $('#email').val();
             var password = $('#password').val();
@@ -287,12 +287,6 @@
                     }
                 },
                 error:function(xhr, status, error){
-                    Swal.fire({
-                        title: 'Error!',
-                        text: xhr.responseJSON.message,
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    });
                     var countdown = 60;
                     var intervalId = setInterval(function() {
                         if(countdown <= 0) {
@@ -301,8 +295,9 @@
                             $('#message_attempt').html("");
                             $('#btnLogin').html("Login").prop("disabled", false);
                         } else {
-                            $('#btnLogin').html("Retry in " + countdown + " seconds").prop("disabled", true);
+                            $('#btnLogin').html("Please wait").prop("disabled", true);
                             countdown--;
+                            $('#message_attempt').html(`Too many login attempts. Please try again in ${countdown} seconds`);
                         }
                     }, 1000);
                 }
