@@ -138,9 +138,10 @@
                     </div>
                     <div class="mb-3">
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-1">
                     <button class="btn btn-primary d-grid w-100" id="btnLogin" type="button">Sign in</button>
                     </div>
+                    <div class="p-1 text-danger" id="message_attempt"></div>
                 </form>
 
               <p class="text-center">
@@ -235,7 +236,7 @@
                 });
             }
         }
-
+        var loginAttempts = 5
         $('#btnLogin').on('click', function() {
             var email = $('#email').val();
             var password = $('#password').val();
@@ -275,19 +276,35 @@
                             icon: 'error',
                             confirmButtonText: 'OK'
                         });
+                        loginAttempts--;
+                        if (loginAttempts > 0) {
+                            console.log("Remaining login attempts: " + loginAttempts);
+                            $('#message_attempt').html("Remaining login attempts: " + loginAttempts);
+                        } else {
+                            console.log("No remaining login attempts. Please try again later.");
+                            $('#loginbutton').prop("disabled", true); // Disable the login button
+                        }
                     }
                 },
                 error:function(xhr, status, error){
-                    // alert(xhr.responseJSON.message);
                     Swal.fire({
                         title: 'Error!',
                         text: xhr.responseJSON.message,
                         icon: 'error',
                         confirmButtonText: 'OK'
                     });
-                    setTimeout(() => {
-                        $('#btnLogin').html("Login").prop("disabled", false);
-                    }, 2000);
+                    var countdown = 60;
+                    var intervalId = setInterval(function() {
+                        if(countdown <= 0) {
+                            clearInterval(intervalId);
+                            loginAttempts = 5;
+                            $('#message_attempt').html("");
+                            $('#btnLogin').html("Login").prop("disabled", false);
+                        } else {
+                            $('#btnLogin').html("Retry in " + countdown + " seconds").prop("disabled", true);
+                            countdown--;
+                        }
+                    }, 1000);
                 }
             });
         });
