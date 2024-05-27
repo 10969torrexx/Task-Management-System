@@ -27,7 +27,7 @@ Route::post('auth/google', [GoogleSigninController::class, 'store'])->name('goog
 # email otp
 Route::get('/emailotp/{email}', [EmailOTPsController::class, 'index'])->name('emailOtpIndex');
 // Route::post('email-otp/send', [EmailOTPsController::class, 'send'])->name('emailOtpSend');
-Route::middleware(['throttle:5,1'])->group(function () {
+Route::middleware(['throttle:3,1'])->group(function () {
     Route::post('emailotp/verify', [EmailOTPsController::class, 'verify'])->name('emailOtpVerify');
     Route::post('/login', [UsersController::class, 'login'])->name('login');
 });
