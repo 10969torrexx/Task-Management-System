@@ -92,7 +92,9 @@
                     <div class="g_id_signin form-control" data-type="standard"></div>
                 </div>
                 <p class="mb-4">Please sign-in to your account and start the adventure</p>
+                <div id="message_alerts">
 
+                </div>
                 <form id="formAuthentication" class="mb-3" action="#" method="POST"> 
                     @csrf
                     <div class="mb-3">
@@ -115,31 +117,29 @@
                         @enderror
                     </div>
                     <div class="mb-3 form-password-toggle">
-                    <div class="d-flex justify-content-between">
-                        <label class="form-label" for="password">Password</label>
-                    </div>
-                    <div class="input-group input-group-merge">
-                        <input
-                            type="password"
-                            id="password"
-                            class="form-control @error('password') is-invalid @enderror"
-                            name="password"
-                            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                            aria-describedby="password"
-                            required autocomplete="current-password"
-                        />
-                        <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-                        @error('password')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                    </div>
-                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <label class="form-label" for="password">Password</label>
+                        </div>
+                        <div class="input-group input-group-merge">
+                            <input
+                                type="password"
+                                id="password"
+                                class="form-control @error('password') is-invalid @enderror"
+                                name="password"
+                                placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                                aria-describedby="password"
+                                required autocomplete="current-password"
+                            />
+                            <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                            @error('password')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
                     </div>
                     <div class="mb-1">
-                    <button class="btn btn-primary d-grid w-100" id="btnLogin" type="button">Sign in</button>
+                        <button class="btn btn-primary d-grid w-100" id="btnLogin" type="button">Sign in</button>
                     </div>
                     <div class="p-1 text-danger" id="message_attempt"></div>
                 </form>
@@ -222,12 +222,11 @@
                         }
                         if (response.status == 300) {
                             $('#btnLogin').html("Login").prop("disabled", false);
-                            Swal.fire({
-                                title: 'Error!',
-                                text: response.message,
-                                icon: 'error',
-                                confirmButtonText: 'OK'
-                            });
+                            $('#message_alerts').html(
+                                `<div class="alert alert-danger" role="alert">
+                                ${response.message}
+                                </div>`
+                            );
                         }
                     },
                     error:function(xhr, status, error){
@@ -270,16 +269,15 @@
                     }
                     if (response.status == 300) {
                         $('#btnLogin').html("Login").prop("disabled", false);
-                        Swal.fire({
-                            title: 'Error!',
-                            text: response.message,
-                            icon: 'error',
-                            confirmButtonText: 'OK'
-                        });
+                        $('#message_alerts').html(
+                            `<div class="alert alert-danger" role="alert">
+                            ${response.message}
+                            </div>`
+                        );
                         loginAttempts--;
                         if (loginAttempts > 0) {
                             console.log("Remaining login attempts: " + loginAttempts);
-                            $('#message_attempt').html("Remaining login attempts: " + loginAttempts);
+                            //$('#message_attempt').html("Remaining login attempts: " + loginAttempts);
                         } else {
                             console.log("No remaining login attempts. Please try again later.");
                             $('#loginbutton').prop("disabled", true); // Disable the login button
